@@ -1,8 +1,16 @@
+/*  Author: Waciuma Wanjohi
+    This code provides simple functions for driving the BoEbot forward, backward
+    and turning left and right. When turning, the bot will blink a turn signal
+    first. Slight calibration may be needed for the stop value. (The value
+    should be 1500, but may be slightly higher or lower on any given servo)
+*/
+
 
 #include <Servo.h>                           // Include servo library
 
 Servo servoLeft;                             // Declare left servo signal
 Servo servoRight;                            // Declare right servo signal
+int STOP = 1490                              // Value at which servos do not turn.
 
 void setup()
 {
@@ -17,9 +25,7 @@ void setup()
 
 void loop()
 {
-  // Code for testing servos.
-  // Tinker with the numbers to see how they work!
-  // For help, visit https://learn.parallax.com/tutorials/robot/shield-bot/robotics-board-education-shield-arduino/chapter-2-shield-lights-servo-4.
+  // Drive the car in an unusual loop. Test out functions below.
   int speedOfCar = 200;
   int seconds = 2;
   forward(seconds,speedOfCar);
@@ -33,13 +39,13 @@ void loop()
 }
 
 void forward(int seconds, int speedOfCar){
-  int leftSpeed = 1490+speedOfCar;
-  int rightSpeed = 1490-speedOfCar;
+  int leftSpeed = STOP+speedOfCar;             // Servos are facing opposite directions, so when one
+  int rightSpeed = STOP-speedOfCar;            // turns clockwise, the other should turn counter clockwise
   servoLeft.writeMicroseconds(leftSpeed);
   servoRight.writeMicroseconds(rightSpeed);
   delay(seconds*1000);
-  servoLeft.writeMicroseconds(1490); // Stop
-  servoRight.writeMicroseconds(1490);
+  servoLeft.writeMicroseconds(STOP); // Stop
+  servoRight.writeMicroseconds(STOP);
 }
 
 void backward(int seconds, int speedOfCar){
@@ -47,13 +53,13 @@ void backward(int seconds, int speedOfCar){
 }
 
 void turn(int speedOfCar){
-  int leftSpeed = 1490+speedOfCar;
-  int rightSpeed = 1490+speedOfCar;
+  int leftSpeed = STOP+speedOfCar;
+  int rightSpeed = STOP+speedOfCar;
   servoLeft.writeMicroseconds(leftSpeed);
   servoRight.writeMicroseconds(rightSpeed);
   delay(1000);
-  servoLeft.writeMicroseconds(1490); // Stop
-  servoRight.writeMicroseconds(1490);
+  servoLeft.writeMicroseconds(STOP); // Stop
+  servoRight.writeMicroseconds(STOP);
 }
 
 void turnRight(){
